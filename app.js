@@ -7,6 +7,19 @@ const jsonServer = require('json-server');
 const bodyParser = require("body-parser");
 const twilio = require('twilio');
 
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+async function getGeminiResponse(prompt) {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  return response.text();
+}
+
+// Example usage:
+getGeminiResponse("What's the capital of India?").then(console.log);
 
 const app = express();
 // Increase the request size limit
