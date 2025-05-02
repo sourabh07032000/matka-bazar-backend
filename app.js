@@ -22,7 +22,7 @@ const client = twilio(accountSid, authToken);
 client.api.accounts(accountSid)
   .fetch()
   .then(account => console.log('Twilio account verified:', account.friendlyName))
-  .catch(err => console.error('Twilio auth failed:', err.message));
+  .catch(err => console.error('Twilio auth failed:', err.message, process.env.TWILIO_ACCOUNT_SID));
 
 
 
