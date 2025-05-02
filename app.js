@@ -5,11 +5,24 @@ const cors = require('cors');
 const path = require('path');
 const jsonServer = require('json-server');
 const bodyParser = require("body-parser");
+const twilio = require('twilio');
+
 
 const app = express();
 // Increase the request size limit
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
+
+
+// ✅ Replace with your actual credentials
+const accountSid = process.env.TWILIO_ACCOUNT_SID; // or hardcoded for testing
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+
+const client = twilio(accountSid, authToken);
+client.api.accounts(accountSid)
+  .fetch()
+  .then(account => console.log('Twilio account verified:', account.friendlyName))
+  .catch(err => console.error('Twilio auth failed:', err.message));
 
 
 
