@@ -68,6 +68,7 @@ app.use('/api/', paymentDetailsRoutes); // Payment details routes
 app.use('/api/marketHistory', marketHistoryRoutes); // Market history routes
 app.use('/notifications', notificationRoutes); // Notification routes
 app.use('/api/slabs', slabRoutes); // Slab routes
+app.use('/', require('./routes/whatsapp'))
 
 // Test Route
 app.get('/test', (req, res) => {
