@@ -34,3 +34,4 @@ router.post('/whatsapp-webhook', async (req, res) => {
     }
   });
   
+  module.exports = router
