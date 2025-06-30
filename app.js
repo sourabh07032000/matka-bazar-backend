@@ -10,10 +10,10 @@ const twilio = require('twilio');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config();
 
-// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// async function getGeminiResponse(prompt) {
-//   const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+async function getGeminiResponse(prompt) {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 
   const chat = model.startChat({ history: [] });
