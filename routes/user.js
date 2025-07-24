@@ -4,7 +4,38 @@ const User = require('../models/User');
 const mongoose = require('mongoose');
 const SlabRate = require("../models/SlabRate");
 
+router.post('/login', async(req, res)=>{
+  try {
+    const { mobileNumber, password } = req.body;
 
+    if (!mobileNumber || !password) {
+      return res.status(400).json({ message: 'Mobile number and password are required.' });
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ mobileNumber });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Verify password
+
+    if (user.password != password) {
+      return res.status(401).json({ message: 'Invalid credentials.' });
+    }
+
+    
+
+    // Respond with success
+    return res.status(200).json(user);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error.' });
+  }
+
+  
+})
 // POST: User route (Create)
 router.post('/', async (req, res) => {
   const { username, mobileNumber, password, mPin } = req.body;
