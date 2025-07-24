@@ -2,8 +2,8 @@ require('dotenv').config(); // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
-const jsonServer = require('json-server');
+// const path = require('path');
+// const jsonServer = require('json-server');
 const bodyParser = require("body-parser");
 const twilio = require('twilio');
 
@@ -51,9 +51,9 @@ app.use(cors());
 app.use(express.json());
 
 // JSON Server Setup (for `/user` route)
-const jsonRouter = jsonServer.router(path.join(__dirname, 'db.json')); // Path to `db.json`
-const jsonMiddlewares = jsonServer.defaults();
-app.use('/users', jsonMiddlewares, jsonServer.bodyParser, jsonRouter); // `/user` routes handled by JSON Server
+// const jsonRouter = jsonServer.router(path.join(__dirname, 'db.json')); // Path to `db.json`
+// const jsonMiddlewares = jsonServer.defaults();
+// app.use('/users', jsonMiddlewares, jsonServer.bodyParser, jsonRouter); // `/user` routes handled by JSON Server
 
 // Express Routes for other services
 const otpRoutes = require('./routes/otpRoutes'); // OTP routes
