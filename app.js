@@ -2,45 +2,14 @@ require('dotenv').config(); // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-// const path = require('path');
-// const jsonServer = require('json-server');
+const path = require('path');
+const jsonServer = require('json-server');
 const bodyParser = require("body-parser");
-const twilio = require('twilio');
-
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-require('dotenv').config();
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-async function getGeminiResponse(prompt) {
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
-
-  const chat = model.startChat({ history: [] });
-
-  const result = await chat.sendMessage(prompt);
-  const response = await result.response;
-  return response.text();
-}
-
-// Example usage:
-getGeminiResponse("What's the capital of India?").then(console.log);
 
 const app = express();
 // Increase the request size limit
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
-
-
-// ✅ Replace with your actual credentials
-const accountSid = process.env.TWILIO_ACCOUNT_SID; // or hardcoded for testing
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
-const client = twilio(accountSid, authToken);
-client.api.accounts(accountSid)
-  .fetch()
-  .then(account => console.log('Twilio account verified:', account.friendlyName))
-  .catch(err => console.error('Twilio auth failed:', err.message, process.env.TWILIO_ACCOUNT_SID));
 
 
 
@@ -51,9 +20,9 @@ app.use(cors());
 app.use(express.json());
 
 // JSON Server Setup (for `/user` route)
-// const jsonRouter = jsonServer.router(path.join(__dirname, 'db.json')); // Path to `db.json`
-// const jsonMiddlewares = jsonServer.defaults();
-// app.use('/users', jsonMiddlewares, jsonServer.bodyParser, jsonRouter); // `/user` routes handled by JSON Server
+const jsonRouter = jsonServer.router(path.join(__dirname, 'db.json')); // Path to `db.json`
+const jsonMiddlewares = jsonServer.defaults();
+app.use('/users', jsonMiddlewares, jsonServer.bodyParser, jsonRouter); // `/user` routes handled by JSON Server
 
 // Express Routes for other services
 const otpRoutes = require('./routes/otpRoutes'); // OTP routes
@@ -99,7 +68,6 @@ app.use('/api/', paymentDetailsRoutes); // Payment details routes
 app.use('/api/marketHistory', marketHistoryRoutes); // Market history routes
 app.use('/notifications', notificationRoutes); // Notification routes
 app.use('/api/slabs', slabRoutes); // Slab routes
-app.use('/', require('./routes/whatsapp'))
 
 // Test Route
 app.get('/test', (req, res) => {
@@ -113,7 +81,7 @@ app.use((err, req, res, next) => {
 });
 
 // Define the Port
-const PORT = process.env.PORT || 8002;
+const PORT = process.env.PORT || 5002;
 
 // Start the Server
 app.listen(PORT, () => {
